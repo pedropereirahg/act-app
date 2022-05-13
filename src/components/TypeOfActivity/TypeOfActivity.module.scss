@@ -1,0 +1,16 @@
+.cardWrapper {
+  padding: 200px 30px;
+  background: #ececec;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card :hover {
+  cursor: pointer;
+  color: rgb(0, 146, 255);
+  ;
+
+}

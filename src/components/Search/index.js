@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Input, Button, Row, Col } from 'antd';
-/* import styles from './SearchPage.module.scss' */
+import Link from 'next/link';
 
 const sendValue = (event) => {
   console.log(event.target.value)
 }
 
-function SearchPage({ handleClick }) {
+function SearchPage() {
   return (
-    <Row justify="center" align="middle" style={{ height: '100%' }}>
+    <Row justify="center" align="middle" style={{ height: '100%', background: '#ececec' }}>
       <Col span={8}><Input placeholder="Digite sua busca..." onChange={sendValue} /></Col>
-      <Col span={1}><Button type="primary" onClick={handleClick} >+</Button></Col>
+      <Col span={1}><Link href={'/activity-creation'}><Button type="primary">+</Button></Link></Col>
     </Row>
   )
 };
