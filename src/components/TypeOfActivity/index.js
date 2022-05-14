@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Col, Card, Typography } from 'antd';
+import { Row, Col, Card, Typography, Button } from 'antd';
 import Link from 'next/link';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import styles from './TypeOfActivity.module.scss';
@@ -31,6 +31,12 @@ function TypeOfActivity() {
           </Link>
         </Col>
       </Row>
+      <Row align="bottom" style={{ height: '800px', width: '100%' }}>
+        <Col span={24} align='end'>
+          <Button size={'large'} href={'/'} danger>Cancelar</Button>
+        </Col>
+      </Row>
+
     </div>
   )
 };
