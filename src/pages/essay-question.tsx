@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import Metadata from '../src/components/Metadata/index';
-import EssayQuestion from '../src/components/EssayQuestion';
+import Metadata from '../components/Metadata/index';
+import EssayQuestion from '../components/EssayQuestion';
 
 const EssayQuestionPage = () => {
   return (
