@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Input, Button, Row, Col } from 'antd';
 import Link from 'next/link';
+
 import CardActivity from '../CardActivity';
 
 const sendValue = (event) => {
@@ -9,14 +10,23 @@ const sendValue = (event) => {
 
 function SearchPage() {
   return (
-    <>
+    <React.Fragment>
       <Row justify="center" align="middle" style={{ height: '40%' }}>
-        <Col span={8}><Input placeholder="Digite sua busca..." onChange={sendValue} /></Col>
-        <Col span={1}><Link href={'/activity-creation'}><Button type="primary">+</Button></Link></Col>
+        <Col span={8}>
+          <Input placeholder="Digite sua busca..." onChange={sendValue} />
+        </Col>
+        <Col span={1}>
+          <Link href={'/activity-creation'}>
+            <Button type="primary">+</Button>
+          </Link>
+        </Col>
       </Row>
-      <CardActivity />
-    </>
-
+      <Row justify="center" align="middle">
+        <Col span={22}>
+          <CardActivity />
+        </Col>
+      </Row>
+    </React.Fragment>
   )
 };
 

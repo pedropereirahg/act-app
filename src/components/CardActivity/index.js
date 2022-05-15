@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Row, Col, Card, Typography } from 'antd';
+import { Card, Typography } from 'antd';
 import Link from 'next/link';
-import { CheckCircleOutlined } from '@ant-design/icons';
 import styles from './CardActivity.module.scss';
 
 const activity = {
@@ -87,7 +86,7 @@ function CardActivity() {
     <div className={styles.cardWrapper}>
 
       {activity.data && activity.data.map((item, i) => (
-        <div style={{ margimBottom: 10 }} key={i}>
+        <div style={{ marginBottom: 10 }} key={i}>
           <Link href={'/essay-question'}>
             <Card bordered={false} className={styles.card}>
               <Typography.Title level={5}>{item.title}</Typography.Title>
