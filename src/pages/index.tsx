@@ -1,9 +1,8 @@
 import * as React from 'react';
 import type { NextPage } from 'next'
-import SearchPage from '../src/components/Search/index';
-import Metadata from '../src/components/Metadata/index'
-import CardActivity from '../src/components/CardActivity/index'
-/* import styles from '../styles/Home.module.scss' */
+
+import SearchPage from '../components/Search/index';
+import Metadata from '../components/Metadata/index'
 
 const Home: NextPage = () => {
   return (

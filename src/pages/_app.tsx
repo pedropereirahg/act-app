@@ -1,6 +1,7 @@
-import './globals.css'
 import 'antd/dist/antd.css'
 import type { AppProps } from 'next/app'
+
+import './globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />
