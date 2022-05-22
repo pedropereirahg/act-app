@@ -17,7 +17,7 @@ function TypeOfActivity() {
           </Link>
         </Col>
         <Col span={8}>
-          <Link href={'/'}>
+          <Link href={'/multiple-choice'}>
             <Card bordered={false} className={styles.card}>
               Múltipla Escolha <CheckCircleOutlined />
             </Card>
