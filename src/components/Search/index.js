@@ -16,7 +16,7 @@ function SearchPage() {
           <Input placeholder="Digite sua busca..." onChange={sendValue} />
         </Col>
         <Col span={1}>
-          <Link href={'/activity-creation'}>
+          <Link href={'/new-activity'}>
             <Button type="primary">+</Button>
           </Link>
         </Col>
