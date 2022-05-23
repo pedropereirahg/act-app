@@ -1,12 +1,12 @@
 import * as React from 'react';
-import Metadata from '../src/components/Metadata/index';
-import MultipleChoice from '../src/components/MultipleChoice';
+import Metadata from '../components/Metadata/index';
+import Forms from '../components/Forms';
 
 const MultipleChoicePage = () => {
   return (
     <React.Fragment>
       <Metadata title={'Atividade Multipla Escolha'} />
-      <MultipleChoice />
+      <Forms />
     </React.Fragment>
   )
 }
