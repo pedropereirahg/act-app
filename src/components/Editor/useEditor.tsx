@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, MouseEventHandler } from 'react';
 import { Editor as TinyMCEEditor } from 'tinymce';
 
 export default function useEditor(initialValue: string, callbackSave = console.log, defaultConfig = {}) {
@@ -10,12 +10,13 @@ export default function useEditor(initialValue: string, callbackSave = console.l
     [initialValue]
   );
 
-  const onEditorSave = () => {
+  const onEditorSave = (): MouseEventHandler<HTMLElement> | undefined => {
     if (editorRef.current) {
       const content = editorRef.current.getContent();
       setEditorIsDirty(false);
       editorRef.current.setDirty(false);
       callbackSave(content);
+      return
     }
   };
 
@@ -24,7 +25,7 @@ export default function useEditor(initialValue: string, callbackSave = console.l
   const handleDirty = (): void => setEditorIsDirty(true)
 
   const config: Record<string, any> = {
-    height: 300,
+    height: 200,
     menubar: false,
     plugins: [
       'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',

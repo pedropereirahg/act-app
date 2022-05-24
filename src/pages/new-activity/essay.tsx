@@ -14,14 +14,9 @@ const Editor = dynamic(() => import('../../components/Editor'), {
 export default function NewEssayPage() {
   const editorInitialValue: string = ''
 
-  // const saveAPI =
-
   const [editorIsDirty, onEditorSave, editorConfig] = useEditor(
     editorInitialValue,
     console.log,
-    {
-      menubar: true
-    }
   )
 
   return (
