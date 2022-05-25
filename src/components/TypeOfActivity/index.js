@@ -9,7 +9,7 @@ function TypeOfActivity() {
     <React.Fragment>
       <Row gutter={16} justify="center" align="middle">
         <Col span={8}>
-          <Link href={'/essay-question'}>
+          <Link href={'/new-activity/essay'}>
             <Card bordered={false} hoverable={true}>
               <Result
                 icon={<EditTwoTone twoToneColor={cyan.primary} />}
@@ -24,7 +24,7 @@ function TypeOfActivity() {
           </Link>
         </Col>
         <Col span={8}>
-          <Link href={'/multiple-choice'}>
+          <Link href={'/new-activity/multiple-choice'}>
             <Card bordered={false} hoverable={true}>
               <Result
                 icon={<CheckCircleTwoTone twoToneColor={cyan.primary} />}
