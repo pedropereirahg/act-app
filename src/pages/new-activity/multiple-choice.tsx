@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import { Row, Col, PageHeader, Typography, Button, Input, Checkbox, Result, Switch, Space, Collapse, Card, Divider, Radio } from 'antd';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import { cyan, grey, presetPrimaryColors, presetDarkPalettes, } from '@ant-design/colors';
-import axios from 'axios';
 
 import useEditor from '../../components/Editor/useEditor';
 import Metadata from '../../components/Metadata/index';
@@ -41,28 +40,18 @@ export default function NewEssayPage() {
 
   const sendValue = () => {
     console.log(JSON.stringify(value))
-    axios.get('https://actedu-act-api-hml.herokuapp.com/activities', {
 
-      /*    headers:
-         {
-           "Access-Control-Allow-Origin": "*",
-           'Content-Type': 'application/json',
-         } */
+    fetch('https://act-api-dev-r5khawnfbq-uc.a.run.app/activities', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(value)
     })
+      .then(res => res.json())
       .then(result => console.log(result))
-    /*     fetch('https://actedu-act-api-dev.herokuapp.com/activities', {
-          method: 'GET',
-          mode: 'no-cors',
-          headers: {
-            'accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-           body: JSON.stringify(value)
-        })
-           .then((response) => console.log(response.json()))
-          .then(response => response.json())
-          .then(result => console.log(result))
-          .catch(error => console.log(error)) */
+      .catch(error => console.log(error))
 
 
   }
