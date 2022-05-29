@@ -33,7 +33,7 @@ export default function NewEssayPage() {
       </Row>
       <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
-          <Result
+          {/* <Result
             icon={<EditTwoTone twoToneColor={cyan.primary} />}
             title="Atividade discursiva"
             subTitle={
@@ -41,7 +41,7 @@ export default function NewEssayPage() {
                 Define o enunciado para o aluno dissertar, argumentar ou descrever a resposta
               </Typography.Paragraph>
             }
-          />
+          /> */}
           {/* <Typography.Title level={4} style={{ marginLeft: 5 }}>Enunciado</Typography.Title> */}
           <Divider orientation="left" orientationMargin="0">
             <Typography.Title level={5} style={{ marginLeft: 5 }}>Enunciado</Typography.Title>

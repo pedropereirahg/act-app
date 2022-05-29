@@ -10,7 +10,7 @@ function TypeOfActivity() {
       <Row gutter={16} justify="center" align="middle">
         <Col span={8}>
           <Link href={'/new-activity/essay'}>
-            <Card bordered={false} hoverable={true}>
+            <Card hoverable>
               <Result
                 icon={<EditTwoTone twoToneColor={cyan.primary} />}
                 title="Discursiva"
@@ -25,7 +25,7 @@ function TypeOfActivity() {
         </Col>
         <Col span={8}>
           <Link href={'/new-activity/multiple-choice'}>
-            <Card bordered={false} hoverable={true}>
+            <Card hoverable>
               <Result
                 icon={<CheckCircleTwoTone twoToneColor={cyan.primary} />}
                 title="Objetiva"

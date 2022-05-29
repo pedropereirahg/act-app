@@ -1,0 +1,6 @@
+.pageHeader > div {
+  justify-content: flex-start;
+  & > span {
+    display: flex;
+  }
+}
