@@ -1,9 +1,10 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
 import { Row, Col, PageHeader, Typography, Button, Input, Checkbox, Result, Switch, Space, Collapse, Card, Divider, Radio } from 'antd';
 import { CheckCircleTwoTone } from '@ant-design/icons';
 import { cyan, grey, presetPrimaryColors, presetDarkPalettes, } from '@ant-design/colors';
+import axios from 'axios';
 
 import useEditor from '../../components/Editor/useEditor';
 import Metadata from '../../components/Metadata/index';
@@ -19,27 +20,53 @@ export default function NewEssayPage() {
     "options": [],
     "type": "singleChoice"
   } as any);
-  const [enunciateValue, setEnunciateValue] = useState({
-    "statement": ""
-  });
+
+
 
   const [statement, setStatement] = useState('');
   const editorInitialValue: string = ''
 
-  const saveAPI = (content: string) => {
-    setEnunciateValue({ ...value, statement: content })
-  }
 
+  const saveAPI = (content: string) => {
+    setStatement(content);
+  }
 
   const [editorIsDirty, onEditorSave, editorConfig] = useEditor(
     editorInitialValue,
     saveAPI
   )
+  useEffect(() => {
+    setValue({ ...value, statement: statement })
+  }, [statement])
 
-  const editEnunciateValue = (statement: any) => {
-    setEnunciateValue({ ...value, statement: statement })
+  const sendValue = () => {
+    console.log(JSON.stringify(value))
+    axios.get('https://actedu-act-api-hml.herokuapp.com/activities', {
+
+      headers:
+      {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(result => console.log(result))
+    /*     fetch('https://actedu-act-api-dev.herokuapp.com/activities', {
+          method: 'GET',
+          mode: 'no-cors',
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+           body: JSON.stringify(value)
+        })
+           .then((response) => console.log(response.json()))
+          .then(response => response.json())
+          .then(result => console.log(result))
+          .catch(error => console.log(error)) */
+
 
   }
+
 
   const handleChange = (event: any) => {
     setOption({ ...option, statement: event.target.value })
@@ -59,10 +86,39 @@ export default function NewEssayPage() {
   };
 
   const onChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
     setIsMultipleChoice(checked)
-
   };
+
+  const isCorrectSingleChoice = (event: any) => {
+    const checkedInput = value.options.find((option: any) => option.statement === event.target.value)
+    setValue({
+      ...value, options: value.options.map((option: any) => {
+        if (option.statement === checkedInput.statement) {
+          return { ...option, isCorrect: true }
+        } else {
+          return { ...option, isCorrect: false }
+        }
+      })
+    })
+  }
+
+  const isCorrectMultipleChoice = (event: any) => {
+    const checkedInput = value.options.find((option: any) => option.statement === event.target.value)
+    setValue({
+      ...value, options: value.options.map((option: any) => {
+        if (option.statement === checkedInput.statement) {
+          if (checkedInput.isCorrect === false) {
+            return { ...option, isCorrect: true }
+          } else {
+            return { ...option, isCorrect: false }
+          }
+        } else {
+          return { ...option }
+        }
+      })
+    })
+  }
+
 
   return (
     <Fragment>
@@ -89,14 +145,14 @@ export default function NewEssayPage() {
           /> */}
 
           <Space align="center">
-            <Switch defaultChecked onChange={onChange} />
+            <Switch onChange={onChange} />
             <Typography.Text>Atividade permite mais de uma alternativa como correta</Typography.Text>
           </Space>
           <Divider orientation="left" orientationMargin="0">
             <Typography.Title level={5} style={{ marginLeft: 5 }}>Enunciado</Typography.Title>
           </Divider>
 
-          {enunciateValue.statement === '' ? (
+          {statement === '' ? (
             <>
               <Editor
                 {...editorConfig}
@@ -106,7 +162,7 @@ export default function NewEssayPage() {
             </>
 
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: enunciateValue.statement }} />
+            <div dangerouslySetInnerHTML={{ __html: statement }} />
           )}
 
           <Divider />
@@ -127,7 +183,7 @@ export default function NewEssayPage() {
           </Collapse>
 
           <br />
-          {enunciateValue.statement === '' ? (
+          {statement === '' ? (
             <Button onClick={onEditorSave} size="large" type="primary" disabled={!editorIsDirty}>
               Salvar
             </Button>
@@ -141,7 +197,7 @@ export default function NewEssayPage() {
                   <Radio.Group>
                     {value.options.map((option: any, i: any) => (
                       <Row key={i} justify="center" align="middle" style={{ height: '50px', width: '100%' }}>
-                        <Col span={24}><Radio value={i}>{option.statement} <Button danger onClick={() => deleteOption(option.statement)}>x</Button></Radio></Col>
+                        <Col span={24}><Radio value={option.statement} onChange={isCorrectSingleChoice}>{option.statement} <Button danger onClick={() => deleteOption(option.statement)}>x</Button></Radio></Col>
                       </Row>
                     ))}
 
@@ -150,7 +206,7 @@ export default function NewEssayPage() {
                 <div>
                   {value.options.map((option: any, i: any) => (
                     <Row key={i} justify="center" align="middle" style={{ height: '50px', width: '100%' }}>
-                      <Col span={24}><Checkbox key={i}>{option.statement} <Button danger onClick={() => deleteOption(option.statement)}>x</Button></Checkbox></Col>
+                      <Col span={24}><Checkbox value={option.statement} onChange={isCorrectMultipleChoice}>{option.statement} <Button danger onClick={() => deleteOption(option.statement)}>x</Button></Checkbox></Col>
                     </Row>
                   ))
                   }
@@ -166,7 +222,7 @@ export default function NewEssayPage() {
             </>
           )}
           <Row>
-            <Button onClick={editEnunciateValue} size="large" type="primary">
+            <Button onClick={sendValue} size="large" type="primary">
               Salvar Questão
             </Button>
           </Row>
