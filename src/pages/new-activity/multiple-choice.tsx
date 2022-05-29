@@ -43,11 +43,11 @@ export default function NewEssayPage() {
     console.log(JSON.stringify(value))
     axios.get('https://actedu-act-api-hml.herokuapp.com/activities', {
 
-      headers:
-      {
-        "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'application/json',
-      }
+      /*    headers:
+         {
+           "Access-Control-Allow-Origin": "*",
+           'Content-Type': 'application/json',
+         } */
     })
       .then(result => console.log(result))
     /*     fetch('https://actedu-act-api-dev.herokuapp.com/activities', {
