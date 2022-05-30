@@ -42,24 +42,36 @@ export default function Search({ onChange, width, timeout = 0, hasQuery = false 
     }
   }
 
-  return (
-    <Card bordered={hasQuery} hoverable={true} className={styles.cardWrapper} bodyStyle={{ padding: 0 }}>
-      {typeof query === 'string' ? (
-        <Input.Search
+  return typeof query === 'string' ? (
+    <Card
+      bordered={hasQuery}
+      hoverable
+      className={styles.cardWrapper}
+      bodyStyle={{ padding: !hasQuery ? '12px' : '0px 12px' }}
+    >
+      <Input.Search
         ref={inputRef}
         placeholder="Qual atividade você está buscando?"
-        enterButton={<Button type="default" icon={<SearchOutlined />} style={{ border: 0 }} />}
+        enterButton={(
+          <Button
+            type="default"
+            icon={<SearchOutlined />}
+            style={{ border: 'none', boxShadow: 'none', borderTopRightRadius: '40px', borderBottomRightRadius: '40px' }}
+          />
+        )}
         size="large"
         defaultValue={query}
         onSearch={handleChange}
         bordered={false}
         style={{ width }}
+        className={styles.inputFix}
       />
-      ) : timeout >= 500 ? (
-        <Skeleton.Input active size="large" style={{ width }} />
-      ) : null}
     </Card>
-  )
+  ) : timeout >= 500 ? (
+    <Skeleton.Input active size="large" style={{
+      ...(hasQuery ? { width: `calc(${width} + 24px)` } : { width })
+    }} />
+  ) : null
 
   // return (
   //   <Input
