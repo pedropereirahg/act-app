@@ -69,8 +69,8 @@ export default function NewEssayPage() {
     setOption({ "statement": "", isCorrect: false })
   };
 
-  const deleteOption = (statement: any) => {
-    const newOptions = value.options.filter((option: any) => option.statement !== statement)
+  const deleteOption = (currentOptionIndex: any) => {
+    const newOptions = value.options.filter((_: any, index: number) => index !== currentOptionIndex)
     setValue({ ...value, options: newOptions })
   };
 
@@ -78,32 +78,21 @@ export default function NewEssayPage() {
     setIsMultipleChoice(checked)
   };
 
-  const isCorrectSingleChoice = (event: any) => {
-    const checkedInput = value.options.find((option: any) => option.statement === event.target.value)
+  const isCorrectSingleChoice = (currentOptionIndex: number) => {
     setValue({
-      ...value, options: value.options.map((option: any) => {
-        if (option.statement === checkedInput.statement) {
-          return { ...option, isCorrect: true }
-        } else {
-          return { ...option, isCorrect: false }
-        }
+      ...value, options: value.options.map((option: any, index: number) => {
+        return { ...option, isCorrect: index === currentOptionIndex }
       })
     })
   }
 
-  const isCorrectMultipleChoice = (event: any) => {
-    const checkedInput = value.options.find((option: any) => option.statement === event.target.value)
+  const isCorrectMultipleChoice = (currentOptionIndex: number) => {
     setValue({
-      ...value, options: value.options.map((option: any) => {
-        if (option.statement === checkedInput.statement) {
-          if (checkedInput.isCorrect === false) {
-            return { ...option, isCorrect: true }
-          } else {
-            return { ...option, isCorrect: false }
-          }
-        } else {
-          return { ...option }
+      ...value, options: value.options.map((option: any, index: number) => {
+        if (index === currentOptionIndex) {
+          return { ...option, isCorrect: !option.isCorrect }
         }
+        return option
       })
     })
   }
@@ -186,7 +175,7 @@ export default function NewEssayPage() {
                   <Radio.Group>
                     {value.options.map((option: any, i: any) => (
                       <Row key={i} justify="center" align="middle" style={{ height: '50px', width: '100%' }}>
-                        <Col span={24}><Radio value={option.statement} onChange={isCorrectSingleChoice}>{option.statement} <Button danger onClick={() => deleteOption(option.statement)}>x</Button></Radio></Col>
+                        <Col span={24}><Radio value={option.statement} onChange={() => isCorrectSingleChoice(i)}>{option.statement} <Button danger onClick={() => deleteOption(i)}>x</Button></Radio></Col>
                       </Row>
                     ))}
 
@@ -195,7 +184,7 @@ export default function NewEssayPage() {
                 <div>
                   {value.options.map((option: any, i: any) => (
                     <Row key={i} justify="center" align="middle" style={{ height: '50px', width: '100%' }}>
-                      <Col span={24}><Checkbox value={option.statement} onChange={isCorrectMultipleChoice}>{option.statement} <Button danger onClick={() => deleteOption(option.statement)}>x</Button></Checkbox></Col>
+                      <Col span={24}><Checkbox checked={option.isCorrect} onChange={() => isCorrectMultipleChoice(i)}>{option.statement} <Button danger onClick={() => deleteOption(i)}>x</Button></Checkbox></Col>
                     </Row>
                   ))
                   }

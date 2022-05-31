@@ -32,7 +32,7 @@ export default function Search({ onChange, width, timeout = 0, hasQuery = false 
     }
   }, [inputRef.current, query]);
 
-  const handleChange: OnChangeFn = (value, event) => {
+  const handleSearch: OnChangeFn = (value, event) => {
     router.push({
       pathname: '/search',
       query: { query: value }
@@ -61,7 +61,7 @@ export default function Search({ onChange, width, timeout = 0, hasQuery = false 
         )}
         size="large"
         defaultValue={query}
-        onSearch={handleChange}
+        onSearch={handleSearch}
         bordered={false}
         style={{ width }}
         className={styles.inputFix}
