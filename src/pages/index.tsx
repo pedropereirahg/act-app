@@ -11,8 +11,8 @@ export default function HomePage() {
   return (
     <Fragment>
       <Metadata title={'Banco de atividades'} />
-      <Row gutter={16} justify="center" align="middle">
-        <Col span={16}>
+      <Row gutter={8} justify="center" align="middle">
+        <Col span={8}>
           <Result
             icon={<SearchIcon />}
             title="Banco de atividades"
