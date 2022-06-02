@@ -33,9 +33,15 @@ export default function Search({ onChange, width, timeout = 0, hasQuery = false 
   }, [inputRef.current, query]);
 
   const handleSearch: OnChangeFn = (value, event) => {
+    let query = {}
+
+    if (typeof value === 'string' && value !== '') {
+      query = { q: value }
+    }
+
     router.push({
       pathname: '/search',
-      query: { query: value }
+      query
     })
     if (typeof onChange === 'function') {
       onChange(value, event)
