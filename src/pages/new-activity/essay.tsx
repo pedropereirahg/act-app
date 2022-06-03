@@ -1,9 +1,8 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
-import { Row, Col, PageHeader, Typography, Button, Input, Result, Switch, Space, Collapse, Card, Divider } from 'antd';
-import { EditTwoTone } from '@ant-design/icons';
-import { cyan, grey, presetPrimaryColors, presetDarkPalettes,  } from '@ant-design/colors';
+import { Row, Col, PageHeader, Typography, Button, Alert, Switch, Space, Collapse, Card, Divider } from 'antd';
+import { grey } from '@ant-design/colors';
 
 import useEditor from '../../components/Editor/useEditor';
 import Metadata from '../../components/Metadata/index';
@@ -13,11 +12,41 @@ const Editor = dynamic(() => import('../../components/Editor'), {
 
 export default function NewEssayPage() {
   const editorInitialValue: string = ''
+  const [statement, setStatement] = useState('');
+  const [sendQuestion, setsendQuestion] = useState(false)
+  const [value, setValue] = useState({
+    "statement": "",
+    "type": "essay"
+  })
+
+  useEffect(() => {
+    setValue({ ...value, statement: statement })
+  }, [statement])
+
+  const getValue = (content: string) => {
+    setStatement(content)
+  }
 
   const [editorIsDirty, onEditorSave, editorConfig] = useEditor(
     editorInitialValue,
-    console.log,
+    getValue
   )
+
+  const sendValue = () => {
+
+    fetch('https://act-api-dev-r5khawnfbq-uc.a.run.app/activities', {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(value)
+    })
+      .then(res => res.json())
+      .then(() => setsendQuestion(true))
+      .catch(error => console.log(error))
+  }
+  console.log(value)
 
   return (
     <Fragment>
@@ -31,9 +60,11 @@ export default function NewEssayPage() {
           />
         </Col>
       </Row>
-      <Row gutter={16} justify="center" align="middle">
-        <Col span={16}>
-          {/* <Result
+      {sendQuestion === false &&
+        <>
+          <Row gutter={16} justify="center" align="middle">
+            <Col span={16}>
+              {/* <Result
             icon={<EditTwoTone twoToneColor={cyan.primary} />}
             title="Atividade discursiva"
             subTitle={
@@ -42,46 +73,64 @@ export default function NewEssayPage() {
               </Typography.Paragraph>
             }
           /> */}
-          {/* <Typography.Title level={4} style={{ marginLeft: 5 }}>Enunciado</Typography.Title> */}
-          <Divider orientation="left" orientationMargin="0">
-            <Typography.Title level={5} style={{ marginLeft: 5 }}>Enunciado</Typography.Title>
-          </Divider>
-          <Editor
-            {...editorConfig}
-            initialValue={editorInitialValue}
-          />
-          <br />
-          <Card bodyStyle={{ backgroundColor: grey[0], opacity: 0.5 }} bordered={true}>
-            <Typography.Paragraph italic>
-              A resposta do aluno vai aqui
-            </Typography.Paragraph>
-          </Card>
+              {/* <Typography.Title level={4} style={{ marginLeft: 5 }}>Enunciado</Typography.Title> */}
+              <Divider orientation="left" orientationMargin="0">
+                <Typography.Title level={5} style={{ marginLeft: 5 }}>Enunciado</Typography.Title>
+              </Divider>
+              {statement === '' ?
+                <Editor
+                  {...editorConfig}
+                  initialValue={editorInitialValue}
+                />
+                :
+                <div dangerouslySetInnerHTML={{ __html: statement }} />
+              }
+              <br />
+              <Card bodyStyle={{ backgroundColor: grey[0], opacity: 0.5 }} bordered={true}>
+                <Typography.Paragraph italic>
+                  A resposta do aluno vai aqui
+                </Typography.Paragraph>
+              </Card>
 
-          <Divider/>
+              <Divider />
 
-          <Collapse ghost>
-            <Collapse.Panel header="Configurações" key="1">
-              <Space direction="vertical">
-                <Space align="center">
-                  <Switch />
-                  <Typography.Text>O aluno pode enviar um arquivo como resposta</Typography.Text>
-                </Space>
-                <Space align="center">
-                <Switch defaultChecked />
-                  <Typography.Text>Permitir que os alunos vejam respostas entre si</Typography.Text>
-                </Space>
-              </Space>
-            </Collapse.Panel>
-          </Collapse>
+              <Collapse ghost>
+                <Collapse.Panel header="Configurações" key="1">
+                  <Space direction="vertical">
+                    <Space align="center">
+                      <Switch />
+                      <Typography.Text>O aluno pode enviar um arquivo como resposta</Typography.Text>
+                    </Space>
+                    <Space align="center">
+                      <Switch defaultChecked />
+                      <Typography.Text>Permitir que os alunos vejam respostas entre si</Typography.Text>
+                    </Space>
+                  </Space>
+                </Collapse.Panel>
+              </Collapse>
 
-          <Divider/>
+              <Divider />
 
-          {/* {Editor && <Editor value={value} onChange={setValue} />} */}
-          {/* <button onClick={log}>Log editor content</button> */}
-          <button onClick={onEditorSave} disabled={!editorIsDirty}>Save</button>
-          {/* {dirty && <p>You have unsaved content!</p>} */}
-        </Col>
-      </Row>
+              {/* {Editor && <Editor value={value} onChange={setValue} />} */}
+              {/* <button onClick={log}>Log editor content</button> */}
+              <Col><Button size="large" type="primary" onClick={onEditorSave} disabled={!editorIsDirty}>Save</Button></Col>
+
+              {/* {dirty && <p>You have unsaved content!</p>} */}
+              <Col>
+
+                <Button onClick={sendValue} size="large" type="primary">
+                  Salvar Questão
+                </Button>
+              </Col>
+            </Col>
+          </Row>
+        </>
+      }
+      {sendQuestion === true &&
+        <Row>
+          <Col span={15} offset={4} ><Alert showIcon message="Success Text" type="success" /></Col>
+        </Row>
+      }
       {/* <Row gutter={10} justify='center' style={{ height: '200px', width: '100%' }}>
         <Col span={24}>
           <Typography.Title italic level={4}>Escreva abaixo o enunciado da questão:</Typography.Title>
@@ -102,6 +151,6 @@ export default function NewEssayPage() {
           <Button size={'large'}>Salvar</Button>
         </Col>
       </Row> */}
-    </Fragment>
+    </Fragment >
   )
 }

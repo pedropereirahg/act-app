@@ -1,10 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
-import { Row, Col, PageHeader, Typography, Button, Input, Checkbox, Result, Switch, Space, Collapse, Card, Divider, Radio, Alert } from 'antd';
-import { CheckCircleTwoTone } from '@ant-design/icons';
-import { cyan, grey, presetPrimaryColors, presetDarkPalettes, } from '@ant-design/colors';
-import Link from 'next/link';
+import { Row, Col, PageHeader, Typography, Button, Input, Checkbox, Switch, Space, Collapse, Divider, Radio, Alert } from 'antd';
 
 import useEditor from '../../components/Editor/useEditor';
 import Metadata from '../../components/Metadata/index';
