@@ -1,4 +1,5 @@
 import { ReactNode, Fragment } from 'react';
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { Row, Col, PageHeader, Pagination, Divider } from 'antd';
 const { convert } = require('html-to-text')
@@ -10,11 +11,11 @@ import { PaginateActivities } from '../../factories/paginate-activities';
 import styles from '../../styles/SearchPage.module.scss';
 import NotFoundActivity from '../../components/NotFoundActivity';
 
-export async function getServerSideProps(context: any) {
+export const getServerSideProps: GetServerSideProps = async context => {
   const { q, p } = context.query
   const params = new URLSearchParams()
   const search = typeof q === 'string' && q !== '' ? q : null
-  const page = !Number.isNaN(parseInt(p)) ? parseInt(p) : null
+  const page = !Number.isNaN(parseInt(`${p}`)) ? parseInt(`${p}`) : null
 
   if (search) {
     params.append('search', search)
