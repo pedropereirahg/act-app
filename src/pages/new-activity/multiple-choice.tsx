@@ -4,15 +4,16 @@ import dynamic from 'next/dynamic';
 import { Row, Col, PageHeader, Typography, Button, Input, Checkbox, Switch, Space, Collapse, Divider, Radio, Alert } from 'antd';
 
 import useEditor from '../../components/Editor/useEditor';
-import Metadata from '../../components/Metadata/index';
+import Metadata from '../../components/Metadata';
 const Editor = dynamic(() => import('../../components/Editor'), {
   ssr: false
 });
+
 export default function NewEssayPage() {
   const { TextArea } = Input;
-  const [sendQuestion, setsendQuestion] = useState(false)
+  const [sendQuestion, setSendQuestion] = useState(false)
   const [isMultipleChoice, setIsMultipleChoice] = useState(Boolean)
-  const [selectICorrect, setselectICorrect] = useState(true)
+  const [selectICorrect, setSelectICorrect] = useState(true)
   const [option, setOption] = useState({ "statement": "", isCorrect: false } as any);
   const [value, setValue] = useState({
     "statement": "",
@@ -50,7 +51,7 @@ export default function NewEssayPage() {
       body: JSON.stringify(value)
     })
       .then(res => res.json())
-      .then(() => setsendQuestion(true))
+      .then(() => setSendQuestion(true))
       .catch(error => console.log(error))
   }
 
@@ -73,7 +74,7 @@ export default function NewEssayPage() {
   };
 
   const onChange = (checked: boolean) => {
-    setselectICorrect(true)
+    setSelectICorrect(true)
     setIsMultipleChoice(checked)
     checked === false ? setValue({ ...value, type: 'single-choice' }) : setValue({ ...value, type: 'multiple-choice' })
 
@@ -100,17 +101,17 @@ export default function NewEssayPage() {
   }
 
   const disabledButton = () => {
-    setselectICorrect(true)
+    setSelectICorrect(true)
     const isCorrect = value.options.map((item: any) => {
       return item.isCorrect
     })
     const findCorrect = isCorrect.filter((element: any) => element === true)
 
     if (value.options.length >= 2 && findCorrect[0] === true && value.type === 'single-choice') {
-      setselectICorrect(false)
+      setSelectICorrect(false)
 
     } else if (value.options.length >= 3 && findCorrect.length >= 2) {
-      setselectICorrect(false)
+      setSelectICorrect(false)
     }
 
 

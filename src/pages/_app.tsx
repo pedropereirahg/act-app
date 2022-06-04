@@ -3,8 +3,6 @@ import type { AppProps } from 'next/app'
 
 import './globals.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function ActivityApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />
 }
-
-export default MyApp

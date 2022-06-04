@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import Search, { SearchIcon } from '../components/Search/index';
 import Metadata from '../components/Metadata/index';
-import styles from '../../styles/HomePage.module.scss';
+import styles from '../styles/HomePage.module.scss';
 
 export default function HomePage() {
 

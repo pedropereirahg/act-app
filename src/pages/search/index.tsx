@@ -7,7 +7,7 @@ import Metadata from '../../components/Metadata/index';
 import Search, { useSearch } from '../../components/Search';
 import CardActivity from '../../components/CardActivity';
 import { PaginateActivities } from '../../factories/paginate-activities';
-import styles from '../../../styles/SearchPage.module.scss';
+import styles from '../../styles/SearchPage.module.scss';
 import NotFoundActivity from '../../components/NotFoundActivity';
 
 export async function getServerSideProps(context: any) {
