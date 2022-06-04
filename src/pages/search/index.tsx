@@ -18,6 +18,11 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const search = typeof q === 'string' && q !== '' ? q : null
   const page = !Number.isNaN(parseInt(`${p}`)) ? parseInt(`${p}`) : null
 
+  context.res.setHeader(
+    'Cache-Control',
+    env.CACHE_CONTROL
+  )
+
   if (search) {
     params.append('search', search)
   }
