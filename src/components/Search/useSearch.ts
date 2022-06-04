@@ -9,7 +9,7 @@ export default function useSearch(
   const router: NextRouter = useRouter();
 
   useEffect(() => {
-    const { query: newQuery } = router.query;
+    const { q: newQuery } = router.query;
     if (router.isReady && query !== newQuery) {
       const callback = () => setQuery(typeof newQuery === 'string' ? newQuery : '');
       if (typeof onChange === 'function') {
@@ -18,7 +18,7 @@ export default function useSearch(
         callback()
       }
     }
-  }, [router.query]);
+  }, [router.query, onChange, router.isReady, query]);
 
   return [query, router];
 }

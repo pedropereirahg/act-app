@@ -1,5 +1,5 @@
-import { Fragment, ChangeEventHandler, SyntheticEvent } from 'react';
-import { Button, Row, Col, Typography, Space, Result, Affix } from 'antd';
+import { Fragment } from 'react';
+import { Button, Row, Col, Typography, Space, Result } from 'antd';
 import Link from 'next/link';
 
 import Search, { SearchIcon } from '../components/Search/index';
