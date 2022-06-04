@@ -4,12 +4,13 @@ import Link from 'next/link';
 import { Row, Col, PageHeader, Pagination, Divider } from 'antd';
 const { convert } = require('html-to-text')
 
-import Metadata from '../../components/Metadata/index';
+import Metadata from '../../components/Metadata';
 import Search, { useSearch } from '../../components/Search';
 import CardActivity from '../../components/CardActivity';
-import { PaginateActivities } from '../../factories/paginate-activities';
-import styles from '../../styles/SearchPage.module.scss';
 import NotFoundActivity from '../../components/NotFoundActivity';
+import env from '../../commons/environment'
+import { PaginateActivities } from '../../commons/factories/paginate-activities';
+import styles from '../../styles/SearchPage.module.scss';
 
 export const getServerSideProps: GetServerSideProps = async context => {
   const { q, p } = context.query
@@ -25,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
     params.append('page', String(page))
   }
 
-  const activities = await fetch(`https://act-api-dev-r5khawnfbq-uc.a.run.app/activities?${params}`)
+  const activities = await fetch(`${env.ACTIVITIES_API_URL}/activities?${params}`)
     .then(async res => {
       const json = await res.json()
       if (res.ok) {

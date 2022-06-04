@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import { Card, Space, Typography } from 'antd';
 import { CheckCircleTwoTone, EditTwoTone } from '@ant-design/icons';
-import { cyan } from '@ant-design/colors';
 
-import { Activity } from '../../factories/activity';
+import { Activity } from '../../commons/factories/activity';
 
 export type CardActivityProps = Pick<Activity, 'id' | 'title' | 'type' | 'statement'> & { loading: boolean }
 
@@ -13,7 +12,7 @@ export default function CardActivity(activity: CardActivityProps) {
       case 'essay':
         return (
           <Space>
-            <EditTwoTone twoToneColor={cyan.primary} />
+            <EditTwoTone />
             <Typography.Text>{title || 'Discursiva'}</Typography.Text>
           </Space>
         )
@@ -22,7 +21,7 @@ export default function CardActivity(activity: CardActivityProps) {
       case 'multiple-choice':
         return (
           <Space>
-            <CheckCircleTwoTone twoToneColor={cyan.primary} />
+            <CheckCircleTwoTone />
             <Typography.Text>{title || 'Objetiva'}</Typography.Text>
           </Space>
         )

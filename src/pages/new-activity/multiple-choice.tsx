@@ -80,7 +80,6 @@ export default function NewEssayPage() {
 
   };
 
-
   const isCorrectSingleChoice = (currentOptionIndex: number) => {
     setValue({
       ...value, options: value.options.map((option: any, index: number) => {
@@ -131,16 +130,6 @@ export default function NewEssayPage() {
       </Row>
       <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
-          {/* <Result
-            icon={<CheckCircleTwoTone twoToneColor={cyan.primary} />}
-            title="Objetiva"
-            subTitle={
-              <Typography.Paragraph type="secondary" ellipsis={{ rows: 2 }}>
-                Permite criar alternativas para que o aluno selecione uma ou várias respostas
-              </Typography.Paragraph>
-            }
-          /> */}
-
           {sendQuestion === false &&
             <>
               <Space align="center">

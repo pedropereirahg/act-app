@@ -3,7 +3,6 @@ import { NextRouter, useRouter } from 'next/router';
 import { Input, Button, Card, Skeleton } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-import SearchIcon from './Icon'
 import useSearch from './useSearch';
 import styles from './Search.module.scss'
 
@@ -19,7 +18,7 @@ export interface SearchProps {
   allowClear?: boolean;
 }
 
-export { SearchIcon, useSearch }
+export { useSearch }
 
 export default function Search({
   query = '',
@@ -39,7 +38,7 @@ export default function Search({
       inputRef.current!.focus({ cursor: 'end' });
       setInitialFocus(true);
     }
-  }, [inputRef.current, query]);
+  }, [initialFocus]);
 
   const handleSearch: OnChangeFn = (value, event) => {
     let query = {}
