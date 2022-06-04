@@ -8,6 +8,7 @@ import Search, { useSearch } from '../../components/Search';
 import CardActivity from '../../components/CardActivity';
 import { PaginateActivities } from '../../factories/paginate-activities';
 import styles from '../../../styles/SearchPage.module.scss';
+import NotFoundActivity from '../../components/NotFoundActivity';
 
 export async function getServerSideProps(context: any) {
   const { q, p } = context.query
@@ -119,6 +120,7 @@ export default function SearchPage({ search, activities }: SearchPageProps) {
       <Divider />
       <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
+        {data.length ? (
           <Row gutter={[16, 16]} align="middle">
             {data.map(({ id, title, type, statement }) => (
               <Col key={id} span={6}>
@@ -132,6 +134,9 @@ export default function SearchPage({ search, activities }: SearchPageProps) {
               </Col>
             ))}
           </Row>
+        ) : (
+          <NotFoundActivity />
+        )}
         </Col>
       </Row>
       <br />
