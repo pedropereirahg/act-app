@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
+import { ReactNode, Fragment } from 'react';
 import Link from 'next/link';
-import { NextRouter, useRouter } from 'next/router';
-import { Row, Col, PageHeader, Pagination } from 'antd';
+import { Row, Col, PageHeader, Pagination, Divider } from 'antd';
+const { convert } = require('html-to-text')
 
 import Metadata from '../../components/Metadata/index';
-import Search from '../../components/Search';
+import Search, { useSearch } from '../../components/Search';
 import CardActivity from '../../components/CardActivity';
+import { PaginateActivities } from '../../factories/paginate-activities';
 import styles from '../../../styles/SearchPage.module.scss';
 
 export async function getServerSideProps(context: any) {
@@ -47,28 +48,24 @@ export async function getServerSideProps(context: any) {
   };
 }
 
-export interface PaginateActivities {
-  data: Array<Record<string, any>>;
-  count: number;
-  currentPage: number;
-  pages: number;
-  perPage: number;
-  total: number;
-}
-
 export interface SearchPageProps {
-  search: string | null;
+  search: string;
   activities: PaginateActivities;
 }
 
 export default function SearchPage({ search, activities }: SearchPageProps) {
   const { data, total, perPage, currentPage, pages } = activities
-  const router: NextRouter = useRouter()
+  const timeout = 500
+
+  const callbackChange = (callback: Function) => setTimeout(callback, timeout)
+  const [query, router] = useSearch(search || '', callbackChange)
+
+  const isLoading = typeof query !== 'string' || query !== (search || '')
 
   const paginationRender = (
     page: number,
     type: 'page' | 'prev' | 'next' | 'jump-prev' | 'jump-next',
-    element: React.ReactNode
+    element: ReactNode
   ) => {
     let p: string = ''
     let hasLink = false
@@ -84,7 +81,7 @@ export default function SearchPage({ search, activities }: SearchPageProps) {
     } else if (type === 'next' && currentPage < pages) {
       p = String(currentPage + 1)
       hasLink = true
-    } else {
+    } else if (type === 'page') {
       p = String(page)
       hasLink = true
     }
@@ -108,24 +105,40 @@ export default function SearchPage({ search, activities }: SearchPageProps) {
             title="Busca"
             extra={(
               <Search
+                query={search || ''}
                 width="600px"
-                timeout={500}
-                hasQuery={true}
+                timeout={timeout}
+                isLoading={isLoading}
+                hasQuery
+                allowClear
               />
             )}
           />
         </Col>
       </Row>
-      <Row justify="center" align="middle">
-        <Col span={22}>
-          <CardActivity activities={activities} />
-        </Col>
-      </Row>
+      <Divider />
       <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
-
+          <Row gutter={[16, 16]} align="middle">
+            {data.map(({ id, title, type, statement }) => (
+              <Col key={id} span={6}>
+                <CardActivity
+                  id={id}
+                  title={title}
+                  type={type}
+                  statement={convert(statement, { wordwrap: 200 })}
+                  loading={isLoading}
+                />
+              </Col>
+            ))}
+          </Row>
+        </Col>
+      </Row>
+      <br />
+      <br />
+      <Row gutter={16} justify="center" align="middle">
+        <Col span={16}>
           <Pagination
-            size="small"
             current={currentPage}
             defaultCurrent={1}
             pageSize={perPage}
@@ -133,10 +146,14 @@ export default function SearchPage({ search, activities }: SearchPageProps) {
             total={total}
             showSizeChanger={false}
             itemRender={paginationRender}
+            onChange={() => {}}
             hideOnSinglePage
           />
         </Col>
       </Row>
+      <br />
+      <br />
+      <br />
     </Fragment>
   )
 }

@@ -1,29 +1,38 @@
 import { useRef, useEffect, useState } from 'react';
-
+import { NextRouter, useRouter } from 'next/router';
 import { Input, Button, Card, Skeleton } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import SearchIcon from './Icon'
-import styles from './Search.module.scss'
 import useSearch from './useSearch';
+import styles from './Search.module.scss'
 
-export type OnChangeFn = (value: string, event?: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLInputElement>) => void;
+type OnChangeFn = (value: string, event?: React.ChangeEvent<HTMLInputElement> | React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLInputElement>) => void;
 
 export interface SearchProps {
+  query?: string;
   onChange?: OnChangeFn;
   width?: string;
   timeout?: number;
+  isLoading?: boolean;
   hasQuery?: boolean;
+  allowClear?: boolean;
 }
 
 export { SearchIcon, useSearch }
 
-export default function Search({ onChange, width, timeout = 0, hasQuery = false }: SearchProps) {
+export default function Search({
+  query = '',
+  onChange,
+  width,
+  timeout = 0,
+  isLoading = false,
+  hasQuery = false,
+  allowClear = false
+}: SearchProps) {
+  const router: NextRouter = useRouter()
   const inputRef = useRef<any>(null);
   const [initialFocus, setInitialFocus] = useState(false);
-
-  const callbackChange = (callback: Function) => setTimeout(callback, timeout)
-  const [query, router] = useSearch(hasQuery ? null : '', callbackChange);
 
   useEffect(() => {
     if (inputRef.current && !initialFocus) {
@@ -48,7 +57,7 @@ export default function Search({ onChange, width, timeout = 0, hasQuery = false 
     }
   }
 
-  return typeof query === 'string' ? (
+  return !isLoading ? (
     <Card
       bordered={hasQuery}
       hoverable
@@ -67,6 +76,7 @@ export default function Search({ onChange, width, timeout = 0, hasQuery = false 
         )}
         size="large"
         defaultValue={query}
+        allowClear={allowClear}
         onSearch={handleSearch}
         bordered={false}
         style={{ width }}
@@ -78,32 +88,4 @@ export default function Search({ onChange, width, timeout = 0, hasQuery = false 
       ...(hasQuery ? { width: `calc(${width} + 24px)` } : { width })
     }} />
   ) : null
-
-  // return (
-  //   <Input
-  //     size="large"
-  //     prefix={<SearchOutlined />}
-  //     placeholder="Digite sua busca..."
-  //     onChange={handleChange}
-  //   />
-  // )
-  // return (
-  //   <Fragment>
-  //     <Row justify="center" align="middle" style={{ height: '40%' }}>
-  //       <Col span={8}>
-  //         <Input placeholder="Digite sua busca..." onChange={handleChange} />
-  //       </Col>
-  //       <Col span={1}>
-  //         <Link href={'/new-activity'}>
-  //           <Button type="primary">+</Button>
-  //         </Link>
-  //       </Col>
-  //     </Row>
-  //     <Row justify="center" align="middle">
-  //       <Col span={22}>
-  //         <CardActivity />
-  //       </Col>
-  //     </Row>
-  //   </Fragment>
-  // )
 }

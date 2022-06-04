@@ -46,49 +46,7 @@ export default function HomePage() {
       </Row>
       <br />
       <br />
-      <Row gutter={16} justify="center" align="middle">
-        <Col span={16}>
-          <Space align="center" size="large" className={styles.contentWrapper}>
-            {/* <NotFoundActivity /> */}
-            {/* <Result
-            // icon={<DatabaseTwoTone twoToneColor={cyan.primary} />}
-            icon={false}
-            title="Não encontrou o que procurava?"
-            subTitle={
-              <Typography.Paragraph type="secondary" ellipsis={{ rows: 2 }}>
-                Encontre, crie e compartilhe atividades discursivas e objetivas com seus alunos e outros professores
-              </Typography.Paragraph>
-            }
-          /> */}
-            {/* <SearchPage handleChange={handleChange} width="450px" /> */}
-
-          </Space>
-        </Col>
-      </Row>
-      {/* <Col span={1}>
-          <Link href={'/new-activity'}>
-            <Button type="primary">
-              Nova atividade
-            </Button>
-          </Link>
-        </Col> */}
-
-      {/* <Row justify="center" align="middle" style={{ height: '40%' }}>
-        <Col span={8}>
-          <Input placeholder="Digite sua busca..." onChange={handleChange} />
-        </Col>
-        <Col span={1}>
-          <Link href={'/new-activity'}>
-            <Button type="primary">+</Button>
-          </Link>
-        </Col>
-      </Row>
-      <Row justify="center" align="middle">
-        <Col span={22}>
-          <CardActivity />
-        </Col>
-      </Row> */}
-      {/* <SearchPage /> */}
+      <br />
     </Fragment>
   )
 }

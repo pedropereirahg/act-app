@@ -1,32 +1,59 @@
 import Link from 'next/link';
-import { Card, Typography } from 'antd';
+import { Card, Space, Typography } from 'antd';
+import { CheckCircleTwoTone, EditTwoTone } from '@ant-design/icons';
+import { cyan } from '@ant-design/colors';
 
-import { PaginateActivities } from '../../pages/search';
-import styles from './CardActivity.module.scss';
+import { Activity } from '../../factories/activity';
 
-export interface CardActivityProps {
-  activities: PaginateActivities
-}
+export type CardActivityProps = Pick<Activity, 'id' | 'title' | 'type' | 'statement'> & { loading: boolean }
 
-export default function CardActivity({ activities }: CardActivityProps) {
+export default function CardActivity(activity: CardActivityProps) {
+  const getTitle = (type: string, title?: string) => {
+    switch (type) {
+      case 'essay':
+        return (
+          <Space>
+            <EditTwoTone twoToneColor={cyan.primary} />
+            <Typography.Text>{title || 'Discursiva'}</Typography.Text>
+          </Space>
+        )
+
+      case 'single-choice':
+      case 'multiple-choice':
+        return (
+          <Space>
+            <CheckCircleTwoTone twoToneColor={cyan.primary} />
+            <Typography.Text>{title || 'Objetiva'}</Typography.Text>
+          </Space>
+        )
+
+      default:
+        return (
+          <Space>
+            <Typography.Text>{title || 'Atividade'}</Typography.Text>
+          </Space>
+        )
+    }
+  }
+
   return (
-    <div className={styles.cardWrapper}>
-      {activities.data && activities.data.map(({ title, statement }, i) => (
-        <div style={{ marginBottom: 10 }} key={i}>
-          <Link href={'/essay-question'}>
-            <Card bordered={true} className={styles.card}>
-              {/* <Typography.Title level={5}>{title}</Typography.Title> */}
-              <Typography.Title level={5}>Title</Typography.Title>
-              <Typography.Paragraph type="secondary" ellipsis={{ rows: 2 }}>
-                <div dangerouslySetInnerHTML={{ __html: statement }}/>
-              </Typography.Paragraph>
-              {/* <div className={styles.description}>
-                {item.statement}
-              </div> */}
-            </Card>
-          </Link>
-        </div>
-      ))}
-    </div>
+    <Link href={`/activity/${activity.id}`}>
+      <Card
+        loading={activity.loading}
+        bodyStyle={{ height: '160px' }}
+        hoverable
+        bordered
+        title={getTitle(activity.type, activity.title)}
+      >
+        <Typography.Paragraph
+          type="secondary"
+          ellipsis={{
+            rows: 3
+          }}
+        >
+          {activity.statement}
+        </Typography.Paragraph>
+      </Card>
+    </Link>
   )
 };
