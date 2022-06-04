@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect, MouseEventHandler } from 'react';
 import { Editor as TinyMCEEditor } from 'tinymce';
 
-export default function useEditor(initialValue: string, callbackSave = console.log, defaultConfig = {}) {
+export type UseEditorFn = [boolean, MouseEventHandler<HTMLElement>, Record<string, any>]
+
+export default function useEditor(initialValue: string, callbackSave = console.log, defaultConfig = {}): UseEditorFn {
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const [editorIsDirty, setEditorIsDirty] = useState(false);
 

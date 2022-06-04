@@ -1,8 +1,10 @@
 import { Fragment } from 'react';
 import { Button, Row, Col, Typography, Space, Result } from 'antd';
 import Link from 'next/link';
+import Icon from '@ant-design/icons';
 
-import Search, { SearchIcon } from '../components/Search/index';
+import SearchSvg from '../assets/search.svg'
+import Search from '../components/Search/index';
 import Metadata from '../components/Metadata/index';
 import styles from '../styles/HomePage.module.scss';
 
@@ -14,7 +16,7 @@ export default function HomePage() {
       <Row gutter={8} justify="center" align="middle">
         <Col span={8}>
           <Result
-            icon={<SearchIcon />}
+            icon={<Icon component={() => <SearchSvg width="2.5em" />} />}
             title="Banco de atividades"
             subTitle={
               <Typography.Paragraph type="secondary" ellipsis={{ rows: 2 }}>

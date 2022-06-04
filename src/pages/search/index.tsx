@@ -1,20 +1,27 @@
 import { ReactNode, Fragment } from 'react';
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { Row, Col, PageHeader, Pagination, Divider } from 'antd';
 const { convert } = require('html-to-text')
 
-import Metadata from '../../components/Metadata/index';
+import Metadata from '../../components/Metadata';
 import Search, { useSearch } from '../../components/Search';
 import CardActivity from '../../components/CardActivity';
-import { PaginateActivities } from '../../factories/paginate-activities';
-import styles from '../../styles/SearchPage.module.scss';
 import NotFoundActivity from '../../components/NotFoundActivity';
+import env from '../../commons/environment'
+import { PaginateActivities } from '../../commons/factories/paginate-activities';
+import styles from '../../styles/SearchPage.module.scss';
 
-export async function getServerSideProps(context: any) {
+export const getServerSideProps: GetServerSideProps = async context => {
   const { q, p } = context.query
   const params = new URLSearchParams()
   const search = typeof q === 'string' && q !== '' ? q : null
-  const page = !Number.isNaN(parseInt(p)) ? parseInt(p) : null
+  const page = !Number.isNaN(parseInt(`${p}`)) ? parseInt(`${p}`) : null
+
+  context.res.setHeader(
+    'Cache-Control',
+    env.CACHE_CONTROL
+  )
 
   if (search) {
     params.append('search', search)
@@ -24,7 +31,7 @@ export async function getServerSideProps(context: any) {
     params.append('page', String(page))
   }
 
-  const activities = await fetch(`https://act-api-dev-r5khawnfbq-uc.a.run.app/activities?${params}`)
+  const activities = await fetch(`${env.ACTIVITIES_API_URL}/activities?${params}`)
     .then(async res => {
       const json = await res.json()
       if (res.ok) {

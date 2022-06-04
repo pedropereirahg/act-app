@@ -2,7 +2,6 @@ import * as React from 'react';
 import Link from 'next/link';
 import { Row, Col, Card, Result, Typography } from 'antd';
 import { EditTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
-import { cyan } from '@ant-design/colors';
 
 function TypeOfActivity() {
   return (
@@ -12,7 +11,7 @@ function TypeOfActivity() {
           <Link href={'/new-activity/essay'}>
             <Card hoverable>
               <Result
-                icon={<EditTwoTone twoToneColor={cyan.primary} />}
+                icon={<EditTwoTone />}
                 title="Discursiva"
                 subTitle={
                   <Typography.Paragraph type="secondary" ellipsis={{ rows: 2 }}>
@@ -27,7 +26,7 @@ function TypeOfActivity() {
           <Link href={'/new-activity/multiple-choice'}>
             <Card hoverable>
               <Result
-                icon={<CheckCircleTwoTone twoToneColor={cyan.primary} />}
+                icon={<CheckCircleTwoTone />}
                 title="Objetiva"
                 subTitle={
                   <Typography.Paragraph type="secondary" ellipsis={{ rows: 2 }}>

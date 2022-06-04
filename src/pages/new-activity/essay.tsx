@@ -13,7 +13,7 @@ const Editor = dynamic(() => import('../../components/Editor'), {
 export default function NewEssayPage() {
   const editorInitialValue: string = ''
   const [statement, setStatement] = useState('');
-  const [sendQuestion, setsendQuestion] = useState(false)
+  const [sendQuestion, setSendQuestion] = useState(false)
   const [value, setValue] = useState({
     "statement": "",
     "type": "essay"
@@ -43,7 +43,7 @@ export default function NewEssayPage() {
       body: JSON.stringify(value)
     })
       .then(res => res.json())
-      .then(() => setsendQuestion(true))
+      .then(() => setSendQuestion(true))
       .catch(error => console.log(error))
   }
   console.log(value)
@@ -64,15 +64,6 @@ export default function NewEssayPage() {
         <>
           <Row gutter={16} justify="center" align="middle">
             <Col span={16}>
-              {/* <Result
-            icon={<EditTwoTone twoToneColor={cyan.primary} />}
-            title="Atividade discursiva"
-            subTitle={
-              <Typography.Paragraph type="secondary" ellipsis={{ rows: 2 }}>
-                Define o enunciado para o aluno dissertar, argumentar ou descrever a resposta
-              </Typography.Paragraph>
-            }
-          /> */}
               {/* <Typography.Title level={4} style={{ marginLeft: 5 }}>Enunciado</Typography.Title> */}
               <Divider orientation="left" orientationMargin="0">
                 <Typography.Title level={5} style={{ marginLeft: 5 }}>Enunciado</Typography.Title>
