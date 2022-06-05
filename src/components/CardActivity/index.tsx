@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import { Card, Space, Typography } from 'antd';
-import { CheckCircleTwoTone, EditTwoTone } from '@ant-design/icons';
+import { setTwoToneColor, CheckCircleTwoTone, EditTwoTone } from '@ant-design/icons';
+import { cyan } from '@ant-design/colors';
 
 import { Activity } from '../../commons/factories/activity';
 
 export type CardActivityProps = Pick<Activity, 'id' | 'title' | 'type' | 'statement'> & { loading: boolean }
+
+setTwoToneColor(`${cyan.primary}`);
 
 export default function CardActivity(activity: CardActivityProps) {
   const getTitle = (type: string, title?: string) => {

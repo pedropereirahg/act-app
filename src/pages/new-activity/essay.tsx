@@ -1,14 +1,18 @@
 import { Fragment, useState, useEffect } from 'react';
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
-import { Row, Col, PageHeader, Typography, Button, Alert, Switch, Space, Collapse, Card, Divider } from 'antd';
-import { grey } from '@ant-design/colors';
+import { Row, Col, PageHeader, Typography, Button, Alert, Space, Divider } from 'antd';
+import { setTwoToneColor, EditTwoTone } from '@ant-design/icons';
+import { cyan } from '@ant-design/colors';
 
 import useEditor from '../../components/Editor/useEditor';
 import Metadata from '../../components/Metadata/index';
+
 const Editor = dynamic(() => import('../../components/Editor'), {
   ssr: false
 });
+
+setTwoToneColor(`${cyan.primary}`);
 
 export default function NewEssayPage() {
   const editorInitialValue: string = ''
@@ -33,7 +37,6 @@ export default function NewEssayPage() {
   )
 
   const sendValue = () => {
-
     fetch('https://act-api-dev-r5khawnfbq-uc.a.run.app/activities', {
       method: 'POST',
       headers: {
@@ -46,7 +49,6 @@ export default function NewEssayPage() {
       .then(() => setSendQuestion(true))
       .catch(error => console.log(error))
   }
-  console.log(value)
 
   return (
     <Fragment>
@@ -64,9 +66,11 @@ export default function NewEssayPage() {
         <>
           <Row gutter={16} justify="center" align="middle">
             <Col span={16}>
-              {/* <Typography.Title level={4} style={{ marginLeft: 5 }}>Enunciado</Typography.Title> */}
-              <Divider orientation="left" orientationMargin="0">
-                <Typography.Title level={5} style={{ marginLeft: 5 }}>Enunciado</Typography.Title>
+              <Divider orientation="left" orientationMargin={8}>
+                <Space align="center">
+                  <EditTwoTone style={{ marginBottom: '0.75em' }} />
+                  <Typography.Title level={5}>Enunciado</Typography.Title>
+                </Space>
               </Divider>
               {statement === '' ?
                 <Editor
@@ -76,16 +80,9 @@ export default function NewEssayPage() {
                 :
                 <div dangerouslySetInnerHTML={{ __html: statement }} />
               }
-              <br />
-              <Card bodyStyle={{ backgroundColor: grey[0], opacity: 0.5 }} bordered={true}>
-                <Typography.Paragraph italic>
-                  A resposta do aluno vai aqui
-                </Typography.Paragraph>
-              </Card>
-
               <Divider />
 
-              <Collapse ghost>
+              {/* <Collapse ghost>
                 <Collapse.Panel header="Configurações" key="1">
                   <Space direction="vertical">
                     <Space align="center">
@@ -100,7 +97,7 @@ export default function NewEssayPage() {
                 </Collapse.Panel>
               </Collapse>
 
-              <Divider />
+              <Divider /> */}
 
               {/* {Editor && <Editor value={value} onChange={setValue} />} */}
               {/* <button onClick={log}>Log editor content</button> */}
