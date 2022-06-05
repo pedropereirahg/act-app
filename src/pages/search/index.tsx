@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   const search = typeof q === 'string' && q !== '' ? q : null
   const page = !Number.isNaN(parseInt(`${p}`)) ? parseInt(`${p}`) : null
 
-  context.res.setHeader(
+  context.res?.setHeader(
     'Cache-Control',
     env.CACHE_CONTROL
   )
@@ -31,7 +31,9 @@ export const getServerSideProps: GetServerSideProps = async context => {
     params.append('page', String(page))
   }
 
-  const activities = await fetch(`${env.ACTIVITIES_API_URL}/activities?${params}`)
+  const queryParams = params.toString() !== '' ? `?${params.toString()}` : ''
+
+  const activities = await fetch(`${env.ACTIVITIES_API_URL}/activities${queryParams}`)
     .then(async res => {
       const json = await res.json()
       if (res.ok) {
@@ -52,16 +54,17 @@ export const getServerSideProps: GetServerSideProps = async context => {
     })
 
   return {
-    props: { search, activities },
+    props: { queryParams, search, activities },
   };
 }
 
 export interface SearchPageProps {
+  queryParams: string;
   search: string;
   activities: PaginateActivities;
 }
 
-export default function SearchPage({ search, activities }: SearchPageProps) {
+export default function SearchPage({ queryParams, search, activities }: SearchPageProps) {
   const { data, total, perPage, currentPage, pages } = activities
   const timeout = 500
 
@@ -132,7 +135,7 @@ export default function SearchPage({ search, activities }: SearchPageProps) {
             {data.map(({ id, title, type, statement }) => (
               <Col key={id} span={6}>
                 <CardActivity
-                  id={id}
+                  url={`/activity/${id}${queryParams}`}
                   title={title}
                   type={type}
                   statement={convert(statement, { wordwrap: 200 })}
