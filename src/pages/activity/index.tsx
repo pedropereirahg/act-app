@@ -32,7 +32,7 @@ export default function ActivityPage() {
       </Row>
       <Row justify="center" align="middle">
         <Col span={24}>
-          {options.map((item, i)  =>
+          {options.map((item, i) =>
             <div key={i} dangerouslySetInnerHTML={{ __html: item }} />
           )}
         </Col>

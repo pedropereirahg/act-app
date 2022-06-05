@@ -34,15 +34,19 @@ export default function CardActivity(activity: CardActivityProps) {
         )
     }
   }
+  const cardSelect = (question: any) => {
+    localStorage.setItem('question', JSON.stringify(question))
+  }
 
   return (
-    <Link href={`/activity/${activity.id}`}>
+    <Link href={`/view-question/${activity.id}`}>
       <Card
         loading={activity.loading}
         bodyStyle={{ height: '160px' }}
         hoverable
         bordered
         title={getTitle(activity.type, activity.title)}
+        onClick={() => cardSelect(activity)}
       >
         <Typography.Paragraph
           type="secondary"
