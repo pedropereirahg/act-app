@@ -2,12 +2,17 @@ import { Fragment, useEffect, useState } from 'react';
 import Router from 'next/router';
 import dynamic from 'next/dynamic';
 import { Row, Col, PageHeader, Typography, Button, Input, Checkbox, Switch, Space, Collapse, Divider, Radio, Alert } from 'antd';
+import { setTwoToneColor, CheckCircleTwoTone } from '@ant-design/icons';
+import { cyan } from '@ant-design/colors';
 
 import useEditor from '../../components/Editor/useEditor';
 import Metadata from '../../components/Metadata';
+
 const Editor = dynamic(() => import('../../components/Editor'), {
   ssr: false
 });
+
+setTwoToneColor(`${cyan.primary}`);
 
 export default function NewEssayPage() {
   const { TextArea } = Input;
@@ -130,14 +135,13 @@ export default function NewEssayPage() {
       </Row>
       <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
-          {sendQuestion === false &&
-            <>
-              <Space align="center">
-                <Switch onChange={onChange} />
-                <Typography.Text>Atividade permite mais de uma alternativa como correta</Typography.Text>
-              </Space>
-              <Divider orientation="left" orientationMargin="0">
-                <Typography.Title level={5} style={{ marginLeft: 5 }}>Enunciado</Typography.Title>
+          {sendQuestion === false && (
+            <Fragment>
+              <Divider orientation="left" orientationMargin={8}>
+                <Space align="center">
+                  <CheckCircleTwoTone style={{ marginBottom: '0.75em' }} />
+                  <Typography.Title level={5}>Enunciado</Typography.Title>
+                </Space>
               </Divider>
 
               {statement === '' ? (
@@ -154,6 +158,11 @@ export default function NewEssayPage() {
               )}
 
               <Divider />
+
+              <Space align="center">
+                <Switch onChange={onChange} />
+                <Typography.Text>Atividade permite mais de uma alternativa como correta</Typography.Text>
+              </Space>
 
               <Collapse ghost>
                 <Collapse.Panel header="Configurações" key="1">
@@ -215,13 +224,13 @@ export default function NewEssayPage() {
                   Salvar Questão
                 </Button>
               </Row>
-            </>
-          }
-          {sendQuestion === true &&
+            </Fragment>
+          )}
+          {sendQuestion === true && (
             <Row>
               <Col span={24}><Alert showIcon message="Success Text" type="success" /></Col>
             </Row>
-          }
+          )}
         </Col>
       </Row>
     </Fragment>
