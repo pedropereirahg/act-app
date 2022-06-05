@@ -21,7 +21,7 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
     if (hasError) {
       router.replace('/404', basePath)
     }
-  }, [hasError])
+  }, [hasError, router, basePath])
 
   return (
     <Fragment>
@@ -32,7 +32,7 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
           title="Pesquisar Questões"
           subTitle="Questão"
         />
-        <a href={`https://api.whatsapp.com/send?text=${pageUrl}`} id="whatsapp-share-btt" rel="nofollow" target="_blank">WhatsApp</a>
+        {/* <a href={`https://api.whatsapp.com/send?text=${pageUrl}`} id="whatsapp-share-btt" rel="nofollow" target="_blank">WhatsApp</a> */}
       </Col>
       {activity && (
         <Row gutter={16} justify="center" align="middle">
