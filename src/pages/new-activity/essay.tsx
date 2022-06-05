@@ -1,12 +1,13 @@
-import { Fragment, useState, useEffect } from 'react';
-import Router from 'next/router';
+import { Fragment } from 'react';
+import Router, { NextRouter, useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import { Row, Col, PageHeader, Typography, Button, Alert, Space, Divider } from 'antd';
+import { Row, Col, PageHeader, Typography, Button, Space, Divider, notification } from 'antd';
 import { setTwoToneColor, EditTwoTone } from '@ant-design/icons';
 import { cyan } from '@ant-design/colors';
 
 import useEditor from '../../components/Editor/useEditor';
 import Metadata from '../../components/Metadata/index';
+import env from '../../commons/environment';
 
 const Editor = dynamic(() => import('../../components/Editor'), {
   ssr: false
@@ -16,39 +17,32 @@ setTwoToneColor(`${cyan.primary}`);
 
 export default function NewEssayPage() {
   const editorInitialValue: string = ''
-  const [statement, setStatement] = useState('');
-  const [sendQuestion, setSendQuestion] = useState(false)
-  const [value, setValue] = useState({
-    "statement": "",
-    "type": "essay"
+  const router: NextRouter = useRouter()
+
+  const saveActivity = (statement: string) => fetch(`${env.ACTIVITIES_API_URL}/activities`, {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ type: 'essay', statement })
+  }).then(async res => {
+    const json = await res.json()
+    if (res.ok && json?.data?.id) {
+      return router.push(`/activity/${json.data.id}`)
+    }
+    throw new Error(JSON.stringify(json))
+  }).catch(() => {
+    notification.error({
+      message: 'Oops...',
+      description: 'Não foi possível criar sua atividade. Tente novamente mais tarde',
+    })
   })
-
-  useEffect(() => {
-    setValue({ ...value, statement: statement })
-  }, [statement])
-
-  const getValue = (content: string) => {
-    setStatement(content)
-  }
 
   const [editorIsDirty, onEditorSave, editorConfig] = useEditor(
     editorInitialValue,
-    getValue
+    saveActivity
   )
-
-  const sendValue = () => {
-    fetch('https://act-api-dev-r5khawnfbq-uc.a.run.app/activities', {
-      method: 'POST',
-      headers: {
-        'accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(value)
-    })
-      .then(res => res.json())
-      .then(() => setSendQuestion(true))
-      .catch(error => console.log(error))
-  }
 
   return (
     <Fragment>
@@ -62,83 +56,28 @@ export default function NewEssayPage() {
           />
         </Col>
       </Row>
-      {sendQuestion === false &&
-        <>
-          <Row gutter={16} justify="center" align="middle">
-            <Col span={16}>
-              <Divider orientation="left" orientationMargin={8}>
-                <Space align="center">
-                  <EditTwoTone style={{ marginBottom: '0.75em' }} />
-                  <Typography.Title level={5}>Enunciado</Typography.Title>
-                </Space>
-              </Divider>
-              {statement === '' ?
-                <Editor
-                  {...editorConfig}
-                  initialValue={editorInitialValue}
-                />
-                :
-                <div dangerouslySetInnerHTML={{ __html: statement }} />
-              }
-              <Divider />
-
-              {/* <Collapse ghost>
-                <Collapse.Panel header="Configurações" key="1">
-                  <Space direction="vertical">
-                    <Space align="center">
-                      <Switch />
-                      <Typography.Text>O aluno pode enviar um arquivo como resposta</Typography.Text>
-                    </Space>
-                    <Space align="center">
-                      <Switch defaultChecked />
-                      <Typography.Text>Permitir que os alunos vejam respostas entre si</Typography.Text>
-                    </Space>
-                  </Space>
-                </Collapse.Panel>
-              </Collapse>
-
-              <Divider /> */}
-
-              {/* {Editor && <Editor value={value} onChange={setValue} />} */}
-              {/* <button onClick={log}>Log editor content</button> */}
-              <Col><Button size="large" type="primary" onClick={onEditorSave} disabled={!editorIsDirty}>Save</Button></Col>
-
-              {/* {dirty && <p>You have unsaved content!</p>} */}
-              <Col>
-
-                <Button onClick={sendValue} size="large" type="primary">
-                  Salvar Questão
-                </Button>
-              </Col>
-            </Col>
-          </Row>
-        </>
-      }
-      {sendQuestion === true &&
-        <Row>
-          <Col span={15} offset={4} ><Alert showIcon message="Success Text" type="success" /></Col>
-        </Row>
-      }
-      {/* <Row gutter={10} justify='center' style={{ height: '200px', width: '100%' }}>
-        <Col span={24}>
-          <Typography.Title italic level={4}>Escreva abaixo o enunciado da questão:</Typography.Title>
-        </Col>
-      </Row>
-      <Row gutter={16} justify="center" align="middle" style={{ height: '100%', width: '100%' }}>
-        <Col span={12}>
-          <TextArea
-            onChange={sendValue}
-            placeholder="Digite a questão"
-            autoSize={{ minRows: 8, maxRows: 15 }}
+      <Row gutter={16} justify="center" align="middle">
+        <Col span={16}>
+          <Divider orientation="left" orientationMargin={8}>
+            <Space align="center">
+              <EditTwoTone style={{ marginBottom: '0.75em' }} />
+              <Typography.Title level={5}>Enunciado</Typography.Title>
+            </Space>
+          </Divider>
+          <Editor
+            {...editorConfig}
+            initialValue={editorInitialValue}
           />
+          <Divider />
+          <Button
+            size="large"
+            type="default"
+            onClick={onEditorSave}
+            disabled={!editorIsDirty}>
+            Criar atividade
+          </Button>
         </Col>
       </Row>
-      <Row gutter={10} justify='center' style={{ height: '500px', width: '100%' }}>
-        <Col span={12}>
-          <Button size={'large'} href={'/activity-creation'}>Cancelar</Button>
-          <Button size={'large'}>Salvar</Button>
-        </Col>
-      </Row> */}
-    </Fragment >
+    </Fragment>
   )
 }

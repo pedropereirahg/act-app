@@ -5,7 +5,7 @@ import { cyan } from '@ant-design/colors';
 
 import { Activity } from '../../commons/factories/activity';
 
-export type CardActivityProps = Pick<Activity, 'id' | 'title' | 'type' | 'statement'> & { loading: boolean }
+export type CardActivityProps = Pick<Activity, 'title' | 'type' | 'statement'> & { loading: boolean; url: string; }
 
 setTwoToneColor(`${cyan.primary}`);
 
@@ -42,7 +42,7 @@ export default function CardActivity(activity: CardActivityProps) {
   }
 
   return (
-    <Link href={`/view-question/${activity.id}`}>
+    <Link href={activity.url}>
       <Card
         loading={activity.loading}
         bodyStyle={{ height: '160px' }}
