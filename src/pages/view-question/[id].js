@@ -42,7 +42,7 @@ export default function ActivityPage() {
           title="Pesquisar Questões"
           subTitle="Questão"
         />
-        <a href={`https://api.whatsapp.com/send?text= ${content}`} id="whatsapp-share-btt" rel="nofollow" target="_blank">WhatsApp</a>
+        {/* <a href={`https://api.whatsapp.com/send?text= ${content}`} id="whatsapp-share-btt" rel="nofollow" target="_blank">WhatsApp</a> */}
       </Col>
       {data !== '' && <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
