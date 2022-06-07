@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import { Card, Space, Typography } from 'antd';
-import { CheckCircleTwoTone, EditTwoTone } from '@ant-design/icons';
+import { setTwoToneColor, CheckCircleTwoTone, EditTwoTone } from '@ant-design/icons';
+import { cyan } from '@ant-design/colors';
 
 import { Activity } from '../../commons/factories/activity';
 
-export type CardActivityProps = Pick<Activity, 'id' | 'title' | 'type' | 'statement'> & { loading: boolean }
+export type CardActivityProps = Pick<Activity, 'title' | 'type' | 'statement'> & { loading: boolean; url: string; }
+
+setTwoToneColor(`${cyan.primary}`);
 
 export default function CardActivity(activity: CardActivityProps) {
   const getTitle = (type: string, title?: string) => {
@@ -34,15 +37,19 @@ export default function CardActivity(activity: CardActivityProps) {
         )
     }
   }
+  const cardSelect = (question: any) => {
+    localStorage.setItem('question', JSON.stringify(question))
+  }
 
   return (
-    <Link href={`/activity/${activity.id}`}>
+    <Link href={activity.url}>
       <Card
         loading={activity.loading}
         bodyStyle={{ height: '160px' }}
         hoverable
         bordered
         title={getTitle(activity.type, activity.title)}
+        onClick={() => cardSelect(activity)}
       >
         <Typography.Paragraph
           type="secondary"

@@ -3,13 +3,12 @@ import { Button, Row, Col, Typography, Space, Result } from 'antd';
 import Link from 'next/link';
 import Icon from '@ant-design/icons';
 
-import SearchSvg from '../assets/search.svg'
+import SearchSvg from '../assets/search.svg';
 import Search from '../components/Search/index';
 import Metadata from '../components/Metadata/index';
 import styles from '../styles/HomePage.module.scss';
 
 export default function HomePage() {
-
   return (
     <Fragment>
       <Metadata title={'Banco de atividades'} />

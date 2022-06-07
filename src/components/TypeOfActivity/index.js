@@ -1,11 +1,14 @@
-import * as React from 'react';
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { Row, Col, Card, Result, Typography } from 'antd';
-import { EditTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
+import { setTwoToneColor, EditTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
+import { cyan } from '@ant-design/colors';
 
-function TypeOfActivity() {
+setTwoToneColor(`${cyan.primary}`);
+
+export default function TypeOfActivity() {
   return (
-    <React.Fragment>
+    <Fragment>
       <Row gutter={16} justify="center" align="middle">
         <Col span={8}>
           <Link href={'/new-activity/essay'}>
@@ -38,8 +41,6 @@ function TypeOfActivity() {
           </Link>
         </Col>
       </Row>
-    </React.Fragment>
+    </Fragment>
   )
 };
-
-export default TypeOfActivity;
