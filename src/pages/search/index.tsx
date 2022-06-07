@@ -1,5 +1,5 @@
 import { ReactNode, Fragment } from 'react';
-import { GetServerSideProps } from 'next';
+import { NextPageContext } from 'next';
 import Link from 'next/link';
 import { Row, Col, PageHeader, Pagination, Divider } from 'antd';
 const { convert } = require('html-to-text')
@@ -11,52 +11,6 @@ import NotFoundActivity from '../../components/NotFoundActivity';
 import env from '../../commons/environment'
 import { PaginateActivities } from '../../commons/factories/paginate-activities';
 import styles from '../../styles/SearchPage.module.scss';
-
-export const getServerSideProps: GetServerSideProps = async context => {
-  const { q, p } = context.query
-  const params = new URLSearchParams()
-  const search = typeof q === 'string' && q !== '' ? q : null
-  const page = !Number.isNaN(parseInt(`${p}`)) ? parseInt(`${p}`) : null
-
-  context.res?.setHeader(
-    'Cache-Control',
-    env.CACHE_CONTROL
-  )
-
-  if (search) {
-    params.append('search', search)
-  }
-
-  if (page) {
-    params.append('page', String(page))
-  }
-
-  const queryParams = params.toString() !== '' ? `?${params.toString()}` : ''
-
-  const activities = await fetch(`${env.ACTIVITIES_API_URL}/activities${queryParams}`)
-    .then(async res => {
-      const json = await res.json()
-      if (res.ok) {
-        return json
-      }
-      throw new Error(JSON.stringify(json))
-    })
-    .catch(error => {
-      console.error(error.message)
-      return {
-        data: [],
-        count: 0,
-        currentPage: 1,
-        pages: 1,
-        perPage: 20,
-        total: 0
-      }
-    })
-
-  return {
-    props: { queryParams, search, activities },
-  };
-}
 
 export interface SearchPageProps {
   queryParams: string;
@@ -130,23 +84,23 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
       <Divider />
       <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
-        {data.length ? (
-          <Row gutter={[16, 16]} align="middle">
-            {data.map(({ id, title, type, statement }) => (
-              <Col key={id} span={6}>
-                <CardActivity
-                  url={`/activity/${id}${queryParams}`}
-                  title={title}
-                  type={type}
-                  statement={convert(statement, { wordwrap: 200 })}
-                  loading={isLoading}
-                />
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <NotFoundActivity />
-        )}
+          {data.length ? (
+            <Row gutter={[16, 16]} align="middle">
+              {data.map(({ id, title, type, statement }) => (
+                <Col key={id} span={6}>
+                  <CardActivity
+                    url={`/activity/${id}${queryParams}`}
+                    title={title}
+                    type={type}
+                    statement={convert(statement, { wordwrap: 200 })}
+                    loading={isLoading}
+                  />
+                </Col>
+              ))}
+            </Row>
+          ) : (
+            <NotFoundActivity />
+          )}
         </Col>
       </Row>
       <br />
@@ -161,7 +115,7 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
             total={total}
             showSizeChanger={false}
             itemRender={paginationRender}
-            onChange={() => {}}
+            onChange={() => { }}
             hideOnSinglePage
           />
         </Col>
@@ -171,4 +125,50 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
       <br />
     </Fragment>
   )
+}
+
+SearchPage.getInitialProps = async (context: NextPageContext) => {
+  const { q, p } = context.query
+  const params = new URLSearchParams()
+  const search = typeof q === 'string' && q !== '' ? q : null
+  const page = !Number.isNaN(parseInt(`${p}`)) ? parseInt(`${p}`) : null
+
+  context.res?.setHeader(
+    'Cache-Control',
+    env.CACHE_CONTROL
+  )
+
+  if (search) {
+    params.append('search', search)
+  }
+
+  if (page) {
+    params.append('page', String(page))
+  }
+
+  const queryParams = params.toString() !== '' ? `?${params.toString()}` : ''
+
+  const activities = await fetch(`${env.ACTIVITIES_API_URL}/activities${queryParams}`)
+    .then(async res => {
+      const json = await res.json()
+      if (res.ok) {
+        return json
+      }
+      throw new Error(JSON.stringify(json))
+    })
+    .catch(error => {
+      console.error(error.message)
+      return {
+        data: [],
+        count: 0,
+        currentPage: 1,
+        pages: 1,
+        perPage: 20,
+        total: 0
+      }
+    })
+
+  return {
+    queryParams, search, activities,
+  };
 }
