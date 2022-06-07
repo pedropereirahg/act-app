@@ -84,23 +84,23 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
       <Divider />
       <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
-        {data.length ? (
-          <Row gutter={[16, 16]} align="middle">
-            {data.map(({ id, title, type, statement }) => (
-              <Col key={id} span={6}>
-                <CardActivity
-                  url={`/activity/${id}${queryParams}`}
-                  title={title}
-                  type={type}
-                  statement={convert(statement, { wordwrap: 200 })}
-                  loading={isLoading}
-                />
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <NotFoundActivity />
-        )}
+          {data.length ? (
+            <Row gutter={[16, 16]} align="middle">
+              {data.map(({ id, title, type, statement }) => (
+                <Col key={id} span={6}>
+                  <CardActivity
+                    url={`/activity/${id}${queryParams}`}
+                    title={title}
+                    type={type}
+                    statement={convert(statement, { wordwrap: 200 })}
+                    loading={isLoading}
+                  />
+                </Col>
+              ))}
+            </Row>
+          ) : (
+            <NotFoundActivity />
+          )}
         </Col>
       </Row>
       <br />
@@ -115,7 +115,7 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
             total={total}
             showSizeChanger={false}
             itemRender={paginationRender}
-            onChange={() => {}}
+            onChange={() => { }}
             hideOnSinglePage
           />
         </Col>
