@@ -7,6 +7,7 @@ import { cyan } from '@ant-design/colors';
 
 import useEditor from '../../components/Editor/useEditor';
 import Metadata from '../../components/Metadata';
+import env from '../../commons/environment'
 
 const Editor = dynamic(() => import('../../components/Editor'), {
   ssr: false
@@ -47,7 +48,7 @@ export default function NewEssayPage() {
   }, [value])
 
   const sendValue = () => {
-    fetch('https://act-api-dev-r5khawnfbq-uc.a.run.app/activities', {
+    fetch(`${env.ACTIVITIES_API_URL}/activities`, {
       method: 'POST',
       headers: {
         'accept': 'application/json',
