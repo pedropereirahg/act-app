@@ -43,7 +43,7 @@ export default function NewMultipleChoicePage() {
   }).then(async res => {
     const json = await res.json()
     if (res.ok && json?.data?.id) {
-      return router.push(`/activity/${json.data.id}`)
+      return router.push(`/${json.data.id}`)
     }
     throw new Error(JSON.stringify(json))
   }).catch(() => {
