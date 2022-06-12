@@ -1,9 +1,10 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState, useRef } from 'react';
 import { NextPageContext } from 'next'
 import { useRouter } from 'next/router'
 import { Row, Col, PageHeader, Radio, Checkbox, Typography, Space, Divider, Card, Skeleton, Popconfirm } from 'antd';
 import { setTwoToneColor, EditTwoTone, CheckCircleTwoTone, WhatsAppOutlined, LinkOutlined, ShareAltOutlined, PrinterOutlined } from '@ant-design/icons';
 import { cyan } from '@ant-design/colors';
+import { useReactToPrint } from 'react-to-print';
 
 import Metadata from '../components/Metadata';
 import { Activity } from '../commons/factories/activity';
@@ -21,6 +22,11 @@ export interface ActivityPageProps {
 
 export default function ActivityPage({ hasError, basePath, activity }: ActivityPageProps) {
   const router: any = useRouter()
+  const activityRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => activityRef.current,
+  });
+
   const pageUrl = `${env.ACTIVITIES_APP_URL}${basePath}`
   const title = !activity
     ? 'Atividade escolar'
@@ -86,7 +92,7 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
                 >
                   <WhatsAppOutlined style={{ fontSize: '1.5em', marginRight: '8px' }} />
                 </a>,
-                <PrinterOutlined key={2} style={{ fontSize: '1.5em' }} />
+                <PrinterOutlined onClick={handlePrint} key={2} style={{ fontSize: '1.5em' }} />
               ]}
             />
           ) : (
@@ -99,7 +105,7 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
         </Col>
       </Row>
 
-      <Row gutter={16} justify="center" align="middle">
+      <Row ref={activityRef} gutter={16} justify="center" align="middle">
         <Col span={16}>
           <Divider orientation="left" orientationMargin={8}>
             <Space align="center">
