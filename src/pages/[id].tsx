@@ -62,6 +62,7 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
               subTitle={activity?.type === 'essay' ? 'Discursiva' : 'Objetiva'}
               extra={[
                 <Popconfirm
+                  key={0}
                   placement="bottomRight"
                   icon={<ShareAltOutlined style={{ color: '#0050b3' }} />}
                   showCancel={false}
@@ -76,14 +77,16 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
                 </Popconfirm>
                 ,
                 <a
+                  key={1}
                   href={`https://api.whatsapp.com/send?text=Veja%20esta%20atividade%20que%20encontrei%21%0D%0A%0D%0A${pageUrl}`}
                   target="_blank"
+                  rel="noreferrer"
                   title="Compartilhe no Whatsapp"
                   style={{ color: '#25d366' }}
                 >
                   <WhatsAppOutlined style={{ fontSize: '1.5em', marginRight: '8px' }} />
                 </a>,
-                <PrinterOutlined style={{ fontSize: '1.5em' }} />
+                <PrinterOutlined key={2} style={{ fontSize: '1.5em' }} />
               ]}
             />
           ) : (
