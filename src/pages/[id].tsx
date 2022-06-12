@@ -1,14 +1,15 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { NextPageContext } from 'next'
-import Router, { NextRouter, useRouter } from 'next/router'
-import { Row, Col, PageHeader, Radio, Checkbox, Typography, Space, Divider, Card } from 'antd';
-import { setTwoToneColor, EditTwoTone, CheckCircleTwoTone } from '@ant-design/icons';
+import { useRouter } from 'next/router'
+import { Row, Col, PageHeader, Radio, Checkbox, Typography, Space, Divider, Card, Skeleton, Popconfirm } from 'antd';
+import { setTwoToneColor, EditTwoTone, CheckCircleTwoTone, WhatsAppOutlined, LinkOutlined, ShareAltOutlined, PrinterOutlined } from '@ant-design/icons';
 import { cyan } from '@ant-design/colors';
 
-import Metadata from '../../components/Metadata';
-import { Activity } from '../../commons/factories/activity';
-import env from '../../commons/environment'
-import { ActivityOption } from '../../commons/factories/activity-option';
+import Metadata from '../components/Metadata';
+import { Activity } from '../commons/factories/activity';
+import env from '../commons/environment'
+import { ActivityOption } from '../commons/factories/activity-option';
+import Link from 'next/link';
 
 setTwoToneColor(`${cyan.primary}`);
 
@@ -19,15 +20,17 @@ export interface ActivityPageProps {
 }
 
 export default function ActivityPage({ hasError, basePath, activity }: ActivityPageProps) {
-  const router: NextRouter = useRouter()
-  const pageUrl = `${env.ACTIVITIES_API_URL}${basePath}`
+  const router: any = useRouter()
+  const pageUrl = `${env.ACTIVITIES_APP_URL}${basePath}`
   const title = !activity
-    ? 'Visualizar Atividade'
+    ? 'Atividade escolar'
     : activity?.title
-      ? `${activity.title.slice(0, 10)}...`
+      ? `Atividade escolar - ${activity.title.slice(0, 20)}...`
       : activity?.type === 'essay'
         ? 'Atividade discursiva'
         : 'Atividade objetiva'
+
+  const [onBack, setOnBack] = useState({})
 
   useEffect(() => {
     if (hasError) {
@@ -35,16 +38,60 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
     }
   }, [hasError, router, basePath])
 
+  useEffect(() => {
+    if (router.isReady && !Object.keys(onBack).length) {
+      setTimeout(
+        () => setOnBack(
+          router?.components && Object.keys(router?.components).length !== 2
+            ? { onBack: () => router.back() }
+            : { onBack: undefined }
+        ), 700
+      )
+    }
+  }, [router, onBack])
+
   return (
     <Fragment>
       <Metadata title={title} />
       <Row gutter={16} justify="center" align="middle">
         <Col span={16}>
-          <PageHeader
-            onBack={() => Router.back()}
-            title="Visualizar atividade"
-            subTitle={activity?.type === 'essay' ? 'Discursiva' : 'Objetiva'}
-          />
+          {router.isReady && Object.keys(onBack).length ? (
+            <PageHeader
+              {...onBack}
+              title="Atividade"
+              subTitle={activity?.type === 'essay' ? 'Discursiva' : 'Objetiva'}
+              extra={[
+                <Popconfirm
+                  placement="bottomRight"
+                  icon={<ShareAltOutlined style={{ color: '#0050b3' }} />}
+                  showCancel={false}
+                  title={(
+                    <Fragment>
+                      <Typography.Paragraph>Copie o link abaixo e compartilhe com outros professores!</Typography.Paragraph>
+                      <Typography.Text type="secondary" copyable style={{ fontSize: '0.9em' }}>{pageUrl}</Typography.Text>
+                    </Fragment>
+                  )}
+                >
+                  <ShareAltOutlined style={{ color: '#0050b3', fontSize: '1.5em', marginRight: '8px' }} />
+                </Popconfirm>
+                ,
+                <a
+                  href={`https://api.whatsapp.com/send?text=Veja%20esta%20atividade%20que%20encontrei%21%0D%0A%0D%0A${pageUrl}`}
+                  target="_blank"
+                  title="Compartilhe no Whatsapp"
+                  style={{ color: '#25d366' }}
+                >
+                  <WhatsAppOutlined style={{ fontSize: '1.5em', marginRight: '8px' }} />
+                </a>,
+                <PrinterOutlined style={{ fontSize: '1.5em' }} />
+              ]}
+            />
+          ) : (
+            <div style={{ padding: '20px 24px' }}>
+              <Skeleton.Input active block />
+            </div>
+          )}
+
           {/* <a href={`https://api.whatsapp.com/send?text=${pageUrl}`} id="whatsapp-share-btt" rel="nofollow" target="_blank">WhatsApp</a> */}
         </Col>
       </Row>

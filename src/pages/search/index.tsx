@@ -89,7 +89,7 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
               {data.map(({ id, title, type, statement }) => (
                 <Col key={id} span={6}>
                   <CardActivity
-                    url={`/activity/${id}${queryParams}`}
+                    url={`/${id}${queryParams}`}
                     title={title}
                     type={type}
                     statement={convert(statement, { wordwrap: 200 })}
