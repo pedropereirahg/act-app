@@ -67,11 +67,10 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
           <PageHeader
             className={styles.pageHeader}
             onBack={() => router.back()}
-            title="Busca"
             extra={(
               <Search
                 query={search || ''}
-                width="600px"
+                width="500px"
                 timeout={timeout}
                 isLoading={isLoading}
                 hasQuery
@@ -82,8 +81,8 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
         </Col>
       </Row>
       <Divider />
-      <Row gutter={16} justify="center" align="middle">
-        <Col span={16}>
+      <Row gutter={22} justify="center" align="middle">
+        <Col span={22}>
           {data.length ? (
             <Row gutter={[16, 16]} align="middle">
               {data.map(({ id, title, type, statement }) => (
@@ -105,8 +104,8 @@ export default function SearchPage({ queryParams, search, activities }: SearchPa
       </Row>
       <br />
       <br />
-      <Row gutter={16} justify="center" align="middle">
-        <Col span={16}>
+      <Row gutter={22} justify="center" align="middle">
+        <Col span={22}>
           <Pagination
             current={currentPage}
             defaultCurrent={1}
