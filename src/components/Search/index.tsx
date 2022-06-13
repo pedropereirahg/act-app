@@ -57,12 +57,7 @@ export default function Search({
   }
 
   return !isLoading ? (
-    <Card
-      bordered={hasQuery}
-      hoverable
-      className={styles.cardWrapper}
-      bodyStyle={{ padding: !hasQuery ? '12px' : '0px 12px' }}
-    >
+    <Card className={styles.cardWrapper}>
       <Input.Search
         ref={inputRef}
         placeholder="Qual atividade você está buscando?"
@@ -84,7 +79,7 @@ export default function Search({
     </Card>
   ) : timeout >= 500 ? (
     <Skeleton.Input active size="large" style={{
-      ...(hasQuery ? { width: `calc(${width} + 24px)` } : { width })
+      ...(hasQuery ? { width: `calc(${width} + 26px)`, height: '44px' } : { width })
     }} />
   ) : null
 }

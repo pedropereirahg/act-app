@@ -11,14 +11,14 @@ import styles from '../styles/HomePage.module.scss';
 export default function HomePage() {
   return (
     <Fragment>
-      <Metadata title={'Atividade escolar - banco de atividades gratuito'} />
-      <Row gutter={8} justify="center" align="middle">
-        <Col span={8}>
+      <Metadata title={'Atividade Escolar - Banco de atividades gratuito'} />
+      <Row gutter={12} justify="center" align="middle">
+        <Col span={12}>
           <Result
             icon={<Icon component={() => <SearchSvg width="2.5em" />} />}
-            title="Banco de atividades gratuito"
+            title={<Typography.Title level={3}>Banco de atividades gratuito</Typography.Title>}
             subTitle={
-              <Typography.Paragraph type="secondary" ellipsis={{ rows: 2 }}>
+              <Typography.Paragraph type="secondary" ellipsis={{ rows: 3 }}>
                 Encontre, crie e compartilhe atividades discursivas e objetivas com seus alunos e outros professores
               </Typography.Paragraph>
             }

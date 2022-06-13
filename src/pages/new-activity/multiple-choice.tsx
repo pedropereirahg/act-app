@@ -70,8 +70,8 @@ export default function NewMultipleChoicePage() {
           />
         </Col>
       </Row>
-      <Row gutter={16} justify="center" align="middle">
-        <Col span={16}>
+      <Row gutter={20} justify="center" align="middle">
+        <Col span={20}>
           <Divider orientation="left" orientationMargin={8}>
             <Space align="center">
               <CheckCircleTwoTone style={{ marginBottom: '0.75em' }} />

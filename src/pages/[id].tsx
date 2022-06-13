@@ -105,8 +105,8 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
         </Col>
       </Row>
 
-      <Row ref={activityRef} gutter={16} justify="center" align="middle">
-        <Col span={16}>
+      <Row ref={activityRef} gutter={20} justify="center" align="middle">
+        <Col span={20}>
           <Divider orientation="left" orientationMargin={8}>
             <Space align="center">
               {activity?.type === 'essay' ? (
@@ -168,6 +168,9 @@ export default function ActivityPage({ hasError, basePath, activity }: ActivityP
           )}
         </Col>
       </Row>
+      <br />
+      <br />
+      <br />
     </Fragment>
   )
 }
