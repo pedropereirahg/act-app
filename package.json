@@ -1,6 +1,6 @@
 {
   "name": "act-app",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Activities APP",
   "private": true,
   "scripts": {
